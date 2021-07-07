@@ -2,9 +2,7 @@
 
 This repository provides a reference implementation of GitOps style automation for SLATE instances. This automation consists of:
 
--A small Python script, PushUpdates.py, responsible for reading changes and issuing requests to the SLATE API
-
--A GitHub Actions workflow for detecting changes and running the Python updater
+-A GitHub Actions workflow for downloading our Python updater script, detecting changes, and running the Python updater
 
 The workflow looks for files that match `values.yaml` and `instance.yaml`. When a file associated with an instance is modified the workflow will update that instance. If a file is added, it will be deployed as a new instance.
 
@@ -16,7 +14,7 @@ Example:
 
         MY_INSTANCE/values.yaml
         MY_INSTANCE/instance.yaml
-        
+
 
 ### SLATE Token
 
@@ -41,16 +39,16 @@ To deploy new instances you must include the cluster, group, and app. Version is
         group: slate-dev
         app: nginx
         version: 1.2.0
-        
+
  **Existing instances**
- 
+
  To manage existing instances you only need to specify a SLATE instanceID.
- 
+
         instance: instance_BrX9HtpP1L0
-        
+
 ### Copy the workflow
 
-Once everything is setup, copy `PushUpdates.py` and `.github/workflows/slate-deployment.yml` into your repository.
+Once everything is setup, copy `.github/workflows/slate-deployment.yml` into your repository.
 
 ### Enable Actions in the GitHub UI
 
@@ -62,6 +60,6 @@ Force pushes rewrite history in git, and can corrupt the state of your instances
 
 ## Other issues
 
-If instance deletion is desired, it must currently be performed manually. 
+If instance deletion is desired, it must currently be performed manually.
 
 The automation will writeback the instance ID for instances that get deployed, this should be refactored to happen on a branch.
