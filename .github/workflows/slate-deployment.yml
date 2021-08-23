@@ -37,8 +37,21 @@ jobs:
           fi
 
           git diff --name-status --pretty="format:" "$BEFORE" "$AFTER" > .changed
+          echo "::set-output name=DIFF_OUTPUT::$(git diff "$BEFORE" "$AFTER")"
           python3 PushUpdates.py ".changed" "${{ secrets.SLATE_API_TOKEN }}"
           rm .changed
+
+      # Uncomment this out if you'd like Mailgun notifications.
+      # - name: Email Changes
+      #   uses: vineetchoudhary/mailgun-action@master
+      #   with:
+      #     api-key: ${{ secrets.MAILGUN_API_KEY }}
+      #     domain: ${{ secrets.MAILGUN_DOMAIN }}
+      #     to: ${{ secrets.MAILGUN_SEND_TO }}
+      #     cc: ${{ secrets.MAILGUN_CC_TO }}
+      #     from: ${{ secrets.MAILGUN_FROM }}
+      #     subject: "SLATE GitOps Change Summary"
+      #     body: "Here's the diff of changes made:\n\n${{ steps.deploy.outputs.DIFF_OUTPUT }}"
 
       - name: Commit SLATE Instance ID
         if: ${{ steps.deploy.outputs.push == 'true' }}
