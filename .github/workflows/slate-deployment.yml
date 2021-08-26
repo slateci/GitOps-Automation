@@ -43,15 +43,25 @@ jobs:
 
       # Uncomment this out if you'd like Mailgun notifications.
       # - name: Email Changes
-      #   uses: vineetchoudhary/mailgun-action@master
-      #   with:
-      #     api-key: ${{ secrets.MAILGUN_API_KEY }}
-      #     domain: ${{ secrets.MAILGUN_DOMAIN }}
-      #     to: ${{ secrets.MAILGUN_SEND_TO }}
-      #     cc: ${{ secrets.MAILGUN_CC_TO }}
-      #     from: ${{ secrets.MAILGUN_FROM }}
-      #     subject: "SLATE GitOps Change Summary"
-      #     body: "Here's the diff of changes made:\n\n${{ steps.deploy.outputs.DIFF_OUTPUT }}"
+      #   if: ${{ steps.deploy.outputs.push == 'true' }}
+      #   run: >-
+      #     echo -n "$MAILGUN_SEND_TO"
+      #     | xargs -r -d',' printf -- '-F to="%s"\0'
+      #     | xargs -r0
+      #     curl -s --user "api:${MAILGUN_API_KEY}"
+      #     https://api.mailgun.net/v3/${MAILGUN_DOMAIN}/messages
+      #     -F from="$MAILGUN_FROM"
+      #     -F subject="$MAILGUN_SUBJECT"
+      #     -F text="Here's the diff of changes made:\n\n${MAILGUN_BODY}"
+      #   env:
+      #     MAILGUN_SUBJECT: "SLATE GitOps Change Summary"
+      #     MAILGUN_BODY: "${{ steps.deploy.outputs.DIFF_OUTPUT }}"
+      #     # fill these out appropriately
+      #     MAILGUN_API_KEY: ${{ secrets.MAILGUN_API_KEY }}
+      #     MAILGUN_DOMAIN: foo.edu
+      #     MAILGUN_FROM: "Foo Bar <bar@foo.edu>"
+      #     # this can be a comma delimited list
+      #     MAILGUN_SEND_TO: foo@bar.com,hello@world.com
 
       - name: Commit SLATE Instance ID
         if: ${{ steps.deploy.outputs.push == 'true' }}
