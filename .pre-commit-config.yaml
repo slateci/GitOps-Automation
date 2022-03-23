@@ -1,0 +1,16 @@
+#- https://pre-commit.com
+repos:
+- repo: https://github.com/pre-commit/pre-commit-hooks
+  rev: v4.1.0
+  hooks:
+    - id: check-yaml
+      args: []
+
+#- Installation:
+# 1. Create and activate python interpreter (conda, virtualenv, etc.)
+# 2. `pip install -r requirements.txt`
+# 3. `pre-commit install`
+
+#- Usage:
+# 1. Activate python interpreter
+# 2. Develop normally and experience the pre-commit hook during `git commit`
