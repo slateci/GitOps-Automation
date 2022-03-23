@@ -58,8 +58,35 @@ Once the workflow is added to the repository, you must allow it to run by naviga
 
 Force pushes rewrite history in git, and can corrupt the state of your instances. Force pushing should be avoided.
 
+## Git pre-commit hooks
+
+This project uses [pre-commit](https://pre-commit.com) to lint all YAML files before allowing `git commit` to proceed.
+
+### Installation
+
+1. Create and activate your preferred Python interpreter (conda, virtualenv, etc.)
+2. Install the `pre-commit` Python package:
+   ```shell
+   pip install -r requirements.txt
+   ```
+3. Check that `pre-commit` is properly installed:
+   ```shell
+   $ pre-commit --version
+   pre-commit 2.17.0
+   ```
+4. Install the git hook scripts:
+   ```shell
+   $ pre-commit install
+   pre-commit installed at .git/hooks/pre-commit
+   ```
+
+### Usage
+
+1. Activate the Python interpreter for this project.
+2. Develop normally and experience the pre-commit hook during `git commit`.
+
 ## Other issues
 
 If instance deletion is desired, it must currently be performed manually.
 
-The automation will writeback the instance ID for instances that get deployed, this should be refactored to happen on a branch.
+The automation will write back the instance ID for instances that get deployed, this should be refactored to happen on a branch.
